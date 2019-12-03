@@ -18,14 +18,13 @@ def determineOutput(nums, noun, verb):
 
         loopVar += 4
 
-    print(nums[0])
     return nums[0]
 
 
 def determineSpecificOutput(nums, target):
     for i in range(100):
         for j in range(100):
-            if determineOutput(nums, i, j) == target:
+            if determineOutput(nums[:], i, j) == target:
                 print(100 * i + j)
                 return
 
@@ -35,9 +34,8 @@ file = open('./day2/input.txt', 'r')
 addresses = [int(i) for i in file.read().split(",")]
 file.close()
 
-determineOutput(addresses, 12, 2)
+print(determineOutput(addresses[:], 12, 2))
 
 # Part 2
 
 determineSpecificOutput(addresses, 19690720)
-
