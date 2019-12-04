@@ -23,7 +23,7 @@ def containsDuplicatePair(num):
     n = str(num)
 
     for i in range(len(n) - 1):
-        if n[i] == n[i + 1] and n.count(n[i]) == 2:
+        if n.count(n[i]) == 2:
             return True
 
     return False
