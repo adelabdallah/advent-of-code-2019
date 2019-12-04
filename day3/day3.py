@@ -18,14 +18,14 @@ def coordinatify(directions):
                 coordinates.append((currentX, i))
         elif d[0] == "D":
             currentY = currentY - int(d[1:])
-            for i in range(int(d[1:] + 1):
+            for i in range(int(d[1:]) + 1):
                 coordinates.append((currentX, i))
 
     return set(coordinates)
 
 
 def shortestDistance(coords):
-    distances=[]
+    distances = []
     for i in coords:
         distances.append(i[0] + i[1] if i[0] + i[1]
                          > 0 else (i[0] + i[1]) * -1)
@@ -33,20 +33,21 @@ def shortestDistance(coords):
     return distances
 
 
-file=open('./day3/input1.txt', 'r')
-lines=file.readlines()
+file = open('./day3/input1.txt', 'r')
+lines = file.readlines()
 file.close()
 
-wire1Directions=lines[0].split(",")
-wire2Directions=lines[1].split(",")
+wire1Directions = lines[0].split(",")
+wire2Directions = lines[1].split(",")
 
-wire1Coords=coordinatify(wire1Directions)
-wire2Coords=coordinatify(wire2Directions)
+wire1Coords = coordinatify(wire1Directions)
+wire2Coords = coordinatify(wire2Directions)
 
-intersections=wire1Coords & wire2Coords
+intersections = wire1Coords & wire2Coords
 
-shortestDist=shortestDistance(intersections)
+shortestDist = shortestDistance(intersections)
 
-print(intersections)
-print(shortestDist)
-print(sorted(shortestDist)[0])
+print(wire1Directions)
+# print(intersections)
+# print(shortestDist)
+# print(sorted(shortestDist)[0])
