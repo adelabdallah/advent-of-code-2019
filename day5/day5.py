@@ -61,7 +61,7 @@ def determineOutput(nums, inputVal):
                 outputPos = nums[loopVar + 3]
 
                 nums[outputPos] = input1 + input2
-                loopVar += 4
+                loopVar += len(modes)
                 continue
             elif getCmdType(cmd) == 2:
                 input1 = getInputPos(modes[0], nums, loopVar + 1)
@@ -69,17 +69,17 @@ def determineOutput(nums, inputVal):
                 outputPos = nums[loopVar + 3]
 
                 nums[outputPos] = input1 * input2
-                loopVar += 4
+                loopVar += len(modes)
                 continue
             elif getCmdType(cmd) == 3:
                 outputPos = getInputPos(modes[0], nums, loopVar + 1)
                 nums[outputPos] = inputVal
-                loopVar += 2
+                loopVar += len(modes)
                 continue
             elif getCmdType(cmd) == 4:
                 outputPos = getInputPos(modes[0], nums, loopVar + 1)
                 outputs.append(nums[outputPos])
-                loopVar += 2
+                loopVar += len(modes)
                 continue
 
     return outputs
