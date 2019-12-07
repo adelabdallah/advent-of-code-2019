@@ -2,89 +2,80 @@ addresses = [3, 225, 1, 225, 6, 6, 1100, 1, 238, 225, 104, 0, 1101, 32, 43, 225,
              677, 226, 224, 102, 2, 223, 223, 1006, 224, 359, 1001, 223, 1, 223, 7, 226, 226, 224, 1002, 223, 2, 223, 1005, 224, 374, 101, 1, 223, 223, 107, 677, 677, 224, 1002, 223, 2, 223, 1006, 224, 389, 1001, 223, 1, 223, 1007, 677, 677, 224, 1002, 223, 2, 223, 1006, 224, 404, 1001, 223, 1, 223, 1107, 677, 226, 224, 1002, 223, 2, 223, 1005, 224, 419, 1001, 223, 1, 223, 108, 226, 226, 224, 102, 2, 223, 223, 1006, 224, 434, 1001, 223, 1, 223, 1108, 226, 677, 224, 1002, 223, 2, 223, 1006, 224, 449, 1001, 223, 1, 223, 1108, 677, 226, 224, 102, 2, 223, 223, 1005, 224, 464, 1001, 223, 1, 223, 107, 226, 226, 224, 102, 2, 223, 223, 1006, 224, 479, 1001, 223, 1, 223, 1008, 226, 226, 224, 102, 2, 223, 223, 1005, 224, 494, 101, 1, 223, 223, 7, 677, 226, 224, 1002, 223, 2, 223, 1005, 224, 509, 101, 1, 223, 223, 8, 226, 677, 224, 1002, 223, 2, 223, 1006, 224, 524, 1001, 223, 1, 223, 1007, 226, 226, 224, 1002, 223, 2, 223, 1006, 224, 539, 101, 1, 223, 223, 1008, 677, 677, 224, 1002, 223, 2, 223, 1006, 224, 554, 101, 1, 223, 223, 1108, 677, 677, 224, 102, 2, 223, 223, 1006, 224, 569, 101, 1, 223, 223, 1107, 226, 677, 224, 102, 2, 223, 223, 1005, 224, 584, 1001, 223, 1, 223, 8, 677, 226, 224, 1002, 223, 2, 223, 1006, 224, 599, 101, 1, 223, 223, 1008, 677, 226, 224, 102, 2, 223, 223, 1006, 224, 614, 1001, 223, 1, 223, 7, 226, 677, 224, 1002, 223, 2, 223, 1005, 224, 629, 101, 1, 223, 223, 107, 226, 677, 224, 102, 2, 223, 223, 1005, 224, 644, 101, 1, 223, 223, 8, 677, 677, 224, 102, 2, 223, 223, 1005, 224, 659, 1001, 223, 1, 223, 108, 677, 677, 224, 1002, 223, 2, 223, 1005, 224, 674, 101, 1, 223, 223, 4, 223, 99, 226]
 
 
-def getCmdType(cmd):
-    if len(str(cmd)) == 1:
-        return cmd
-    else:
-        return int(str(cmd)[::-1][:1])
+def getParamByMode(mode, step, index, inputs):
+    if mode == 0:
+        return inputs[inputs[index + step]]
+    return inputs[index + step]
 
 
-def getParamModes(cmd):
-    return str(cmd)[::-1][2:]
+def getParamsByMode(mode1, mode2, index, inputs):
+    return getParamByMode(mode1, 1, index, inputs), getParamByMode(mode2, 2, index, inputs)
 
 
-def getInputPos(mode, nums, index):
-    if int(mode) == 0:
-        return int(nums[nums[index]])
-    elif int(mode) == 1:
-        return int(nums[index])
+def getParamModes(modes):
+    return [int(mode) for mode in [modes[2], modes[1], modes[2], modes[3:]]]
 
 
-def determineOutput(nums, inputVal):
-
-    outputs = []
-    loopVar = 0
-
-    while nums[loopVar] != 99:
-
-        cmd = nums[loopVar]
-        standardCmd = len(str(cmd)) == 1
-
-        if standardCmd:
-
-            input1 = nums[nums[loopVar + 1]]
-            input2 = nums[nums[loopVar + 2]]
-            outputPos = nums[loopVar + 3]
-
-            if cmd == 1:
-                nums[outputPos] = input1 + input2
-                loopVar += 4
-                continue
-            elif cmd == 2:
-                nums[outputPos] = input1 * input2
-                loopVar += 4
-                continue
-            elif cmd == 3:
-                nums[nums[loopVar + 1]] = inputVal
-                loopVar += 2
-                continue
-            elif cmd == 4:
-                outputs.append(nums[loopVar + 1])
-                loopvar += 2
-                continue
-
-        else:
-            modes = getParamModes(cmd)
-            if getCmdType(cmd) == 1:
-                input1 = getInputPos(modes[0], nums, loopVar + 1)
-                input2 = getInputPos(modes[1], nums, loopVar + 2)
-                outputPos = nums[loopVar + 3]
-
-                nums[outputPos] = input1 + input2
-                loopVar += len(modes)
-                continue
-            elif getCmdType(cmd) == 2:
-                input1 = getInputPos(modes[0], nums, loopVar + 1)
-                input2 = getInputPos(modes[1], nums, loopVar + 2)
-                outputPos = nums[loopVar + 3]
-
-                nums[outputPos] = input1 * input2
-                loopVar += len(modes)
-                continue
-            elif getCmdType(cmd) == 3:
-                outputPos = getInputPos(modes[0], nums, loopVar + 1)
-                nums[outputPos] = inputVal
-                loopVar += len(modes)
-                continue
-            elif getCmdType(cmd) == 4:
-                outputPos = getInputPos(modes[0], nums, loopVar + 1)
-                outputs.append(nums[outputPos])
-                loopVar += len(modes)
-                continue
-
-    return outputs
+def addition(mode1, mode2, index, inputs):
+    param1, param2 = getParamsByMode(mode1, mode2, index, inputs)
+    inputs[inputs[index + 3]] = param1 + param2
 
 
-print(determineOutput(addresses, 1))
-# print(getCmdType(1001))
-# print(getParamModes(1099))
+def multiply(mode1, mode2, index, inputs):
+    param1, param2 = getParamsByMode(mode1, mode2, index, inputs)
+    inputs[inputs[index + 3]] = param1 * param2
+
+
+def less(mode1, mode2, index, inputs):
+    param1, param2 = getParamsByMode(mode1, mode2, index, inputs)
+    inputs[inputs[index + 3]] = 1 if param1 < param2 else 0
+
+
+def equal(mode1, mode2, index, inputs):
+    param1, param2 = getParamsByMode(mode1, mode2, index, inputs)
+    inputs[inputs[index + 3]] = 1 if param1 == param2 else 0
+
+
+def jumpIfTrue(mode1, mode2, index, inputs):
+    param1, param2 = getParamsByMode(mode1, mode2, index, inputs)
+    return param2 if param1 != 0 else index + 3
+
+
+def jumpIfFalse(mode1, mode2, index, inputs):
+    param1, param2 = getParamsByMode(mode1, mode2, index, inputs)
+    return param2 if param1 == 0 else index + 3
+
+
+def computify(inputs, userInput):
+    index = 0
+    diagnostic = None
+    while inputs[index] != 99:
+        mode1, mode2, mode3, opcode = getParamModes(f"{inputs[index]:05}")
+        if opcode == 1:
+            addition(mode1, mode2, index, inputs)
+            index += 4
+        elif opcode == 2:
+            multiply(mode1, mode2, index, inputs)
+            index += 4
+        elif opcode == 3:
+            inputs[inputs[index + 1]] = userInput
+            index += 2
+        elif opcode == 4:
+            diagnostic = inputs[inputs[index + 1]]
+            index += 2
+        elif opcode == 5:
+            index = jumpIfTrue(mode1, mode2, index, inputs)
+        elif opcode == 6:
+            index = jumpIfFalse(mode1, mode2, index, inputs)
+        elif opcode == 7:
+            less(mode1, mode2, index, inputs)
+            index += 4
+        elif opcode == 8:
+            equal(mode1, mode2, index, inputs)
+            index += 4
+
+    return diagnostic
+
+
+print(computify(addresses[:], 1))
+print(computify(addresses[:], 5))
